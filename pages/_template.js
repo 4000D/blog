@@ -1,74 +1,69 @@
 import React from 'react'
 import { Link } from 'react-router'
-import { Container } from 'react-responsive-grid'
+import { Grid, Row, Col } from 'react-bootstrap'
 import { prefixLink } from 'gatsby-helpers'
 import { rhythm, scale } from 'utils/typography'
 import { config } from 'config'
+import update from 'immutability-helper'
+import groupBy from 'lodash/groupBy'
 
-class Template extends React.Component {
-  render () {
+import 'styles/app.scss'
+
+import Header from 'components/Header/Header'
+import Sidebar from 'components/Sidebar/Sidebar'
+
+class App extends React.Component {
+  state = {
+    pages: [],
+    categories: [], // { name, topics }
+  }
+
+  componentDidMount() {
+    const pages = this.props.route.pages || []
+    const data = pages
+      .filter(page => page.data.category && page.data.topic)
+      .map(page => ({
+        category: page.data.category,
+        topic: page.data.topic,
+      }))
+    const categories = groupBy(data, 'category')
+
+    this.setState(update(this.state, {
+      pages: { $set: pages },
+      categories: { $set: categories }
+    }))
+  }
+
+  render() {
+    console.log(this);
+    const { categories } = this.state
     const { location, children } = this.props
-    let header
-    if (location.pathname === prefixLink('/')) {
-      header = (
-        <h1
-          style={{
-            ...scale(1.5),
-            marginBottom: rhythm(1.5),
-            marginTop: 0,
-          }}
-        >
-          <Link
-            style={{
-              boxShadow: 'none',
-              textDecoration: 'none',
-              color: 'inherit',
-            }}
-            to={prefixLink('/')}
-          >
-            {config.blogTitle}
-          </Link>
-        </h1>
-      )
-    } else {
-      header = (
-        <h3
-          style={{
-            fontFamily: 'Montserrat, sans-serif',
-            marginTop: 0,
-          }}
-        >
-          <Link
-            style={{
-              boxShadow: 'none',
-              textDecoration: 'none',
-              color: 'inherit',
-            }}
-            to={prefixLink('/')}
-          >
-            {config.blogTitle}
-          </Link>
-        </h3>
-      )
-    }
     return (
-      <Container
-        style={{
-          maxWidth: rhythm(24),
-          padding: `${rhythm(1.5)} ${rhythm(3/4)}`,
-        }}
-      >
-        {header}
-        {children}
-      </Container>
+      <div>
+        <Header />
+
+        <Grid>
+          <Row>
+            <Col sm={2}>
+              { categories && <Sidebar categories={categories} />}
+            </Col>
+            <Col sm={10} style={{
+                backgroundColor: 'green'
+              }}>
+              { children }
+            </Col>
+          </Row>
+        </Grid>
+
+      </div>
     )
   }
 }
 
-Template.propTypes = {
+App.propTypes = {
   children: React.PropTypes.any,
   location: React.PropTypes.object,
   route: React.PropTypes.object,
 }
 
-export default Template
+export default App

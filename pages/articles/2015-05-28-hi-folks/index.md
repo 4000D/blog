@@ -1,6 +1,8 @@
 ---
 title: New Beginnings
 date: "2015-05-28T22:40:32.169Z"
+category: 'hello2'
+topic: 'hello-topic3'
 path: "/hi-folks/"
 ---
 

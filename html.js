@@ -34,6 +34,11 @@ module.exports = React.createClass({
           <TypographyStyle typography={typography} />
           <GoogleFont typography={typography} />
           {css}
+
+          <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css"/>
+          <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap-theme.min.css"/>
+
+
         </head>
         <body>
           <div id="react-mount" dangerouslySetInnerHTML={{ __html: body }} />

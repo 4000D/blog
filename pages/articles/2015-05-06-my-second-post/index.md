@@ -1,6 +1,8 @@
 ---
 title: My Second Post!
 date: "2015-05-06T23:46:37.121Z"
+category: 'hello'
+topic: 'hello-topic2'
 readNext: "/hi-folks/"
 path: "/my-second-post/"
 ---
